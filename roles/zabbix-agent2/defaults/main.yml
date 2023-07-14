@@ -1,0 +1,27 @@
+---
+# defaults file for ansible-zabbix-agent2
+
+zabbix_repo_yum_gpgcheck: False
+zabbix_repo_yum_schema: https
+zabbix_repo_yum:
+  - name: zabbix
+    description: Zabbix Official Repository - $basearch
+    baseurl: "{{ zabbix_repo_yum_schema }}://repo.zabbix.com/zabbix/{{ zabbix_version }}/rhel/{{ ansible_distribution_major_version }}/$basearch/"
+    mode: "0644"
+    gpgcheck: "{{ zabbix_repo_yum_gpgcheck }}"
+    gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ZABBIX
+    state: present
+  - name: zabbix-non-supported
+    description: Zabbix Official Repository non-supported - $basearch
+    baseurl: "{{ zabbix_repo_yum_schema }}://repo.zabbix.com/non-supported/rhel/{{ ansible_distribution_major_version }}/$basearch/"
+    mode: "0644"
+    gpgcheck: "{{ zabbix_repo_yum_gpgcheck }}"
+    gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ZABBIX
+    state: present
+  - name: zabbix-agent2-plugins
+    description: Zabbix Official Repository (Agent2 Plugins) - $basearch
+    baseurl: "{{ zabbix_repo_yum_schema }}://repo.zabbix.com/zabbix-agent2-plugins/1/rhel/{{ ansible_distribution_major_version }}/$basearch/"
+    mode: "0644"
+    gpgcheck: "{{ zabbix_repo_yum_gpgcheck }}"
+    gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ZABBIX
+    state: present

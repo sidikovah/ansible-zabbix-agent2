@@ -1,0 +1,61 @@
+---
+# vars file for ansible-zabbix-agent2
+
+agent_PidFile: /var/run/zabbix/zabbix_agent2.pid
+agent_LogType: file
+agent_LogFile: /var/log/zabbix/zabbix_agent2.log
+agent_LogFileSize: 0
+agent_DebugLevel: 3
+agent_SourceIP:
+agent_Server: "{{ zabbix_server }}"
+agent_ListenPort: 10050
+agent_ListenIP:
+agent_StatusPort:
+
+##### Active checks related
+agent_ServerActive: "{{ zabbix_server }}"
+agent_Hostname:
+agent_HostnameItem: system.hostname
+agent_HostMetadata: Linux
+agent_HostMetadataItem:
+agent_HostInterface:
+agent_HostInterfaceItem:
+agent_RefreshActiveChecks: 60
+agent_BufferSend: 5
+agent_BufferSize: 100
+agent_EnablePersistentBuffer: 0
+agent_PersistentBufferPeriod: 1h
+agent_PersistentBufferFile:
+
+############ ADVANCED PARAMETERS #################
+agent_Alias:
+agent_Timeout: 30
+agent_Include: /etc/zabbix/zabbix_agent2.d/*.conf
+agent_PluginTimeout:
+agent_PluginSocket:
+
+####### USER-DEFINED MONITORED PARAMETERS #######
+agent_UnsafeUserParameters: 0
+agent_UserParameter:
+agent_UserParameterDir:
+agent_ControlSocket: /tmp/agent.sock
+
+####### TLS-RELATED PARAMETERS #######
+agent_TLSConnect: unencrypted
+agent_TLSAccept: unencrypted
+agent_TLSCAFile:
+agent_TLSCRLFile:
+agent_TLSServerCertIssuer:
+agent_TLSServerCertSubject:
+agent_TLSCertFile:
+agent_TLSKeyFile:
+agent_TLSPSKIdentity:
+agent_TLSPSKFile:
+
+####### PLUGIN-SPECIFIC PARAMETERS #######
+agent_Plugins_Log_MaxLinesPerSecond: 20
+agent_AllowKey: system.run[*]
+agent_DenyKey:
+agent_Plugins_SystemRun_LogRemoteCommands: 0
+agent_ForceActiveChecksOnStart: 0
+agent_Include_Plugins: ./zabbix_agent2.d/plugins.d/*.conf

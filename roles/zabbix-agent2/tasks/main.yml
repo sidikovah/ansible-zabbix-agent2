@@ -1,0 +1,21 @@
+---
+# tasks file for ansible-zabbix-agent2
+
+- include_tasks: debian.yml
+  when:
+    ansible_distribution_file_variety == 'Debian'
+
+- include_tasks: redhat.yml
+  when: 
+    ansible_distribution_file_variety == 'RedHat'
+
+- name: Copiando zabbix_agent2.conf
+  template:
+    src: ../templates/zabbix_agent2.conf.j2
+    dest: /etc/zabbix/zabbix_agent2.conf
+
+- name: Iniciando Zabbix Agent 2
+  service:
+    name: zabbix-agent2
+    state: restarted
+    enabled: yes
