@@ -1,6 +1,7 @@
 ---
 # defaults file for ansible-zabbix-agent2
 
+zabbix_gpg_key: /etc/apt/keyrings/zabbix-official-repo.asc
 zabbix_repo_yum_gpgcheck: False
 zabbix_repo_yum_schema: https
 zabbix_repo_yum:

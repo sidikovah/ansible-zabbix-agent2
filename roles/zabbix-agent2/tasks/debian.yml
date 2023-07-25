@@ -11,7 +11,7 @@
 - name: Adicionando key
   get_url:
     url: http://repo.zabbix.com/zabbix-official-repo.key
-    dest: /etc/apt/keyrings/zabbix-official-repo.asc
+    dest: {{ zabbix_gpg_key }}
     mode: "0644"
     force: true
 
