@@ -1,6 +1,6 @@
 ---
-- name: "Cria pasta /etc/apt/keyrings/ em versões antigas"
-  ansible.builtin.file:
+- name: Cria pasta /etc/apt/keyrings/ em versões antigas
+  file:
     path: /etc/apt/keyrings/
     state: directory
     mode: "0755"
@@ -11,7 +11,7 @@
 - name: Adicionando key
   get_url:
     url: http://repo.zabbix.com/zabbix-official-repo.key
-    dest: {{ zabbix_gpg_key }}
+    dest: "{{ zabbix_gpg_key }}"
     mode: "0644"
     force: true
 
