@@ -4,6 +4,19 @@
     policy: targeted
     state: disabled
 
+- name: Verificando se o firewalld esta ativo
+  systemd:
+    name: firewalld
+  register: firewalld_status
+
+- name: Liberando a porta {{ agent_ListenPort }}/tcp permanentemente no firewalld
+  firewalld:
+    port: "{{ agent_ListenPort }}/tcp"
+    immediate: true
+    permanent: true
+    state: enabled
+  when: firewalld_status.status.ActiveState == 'active'
+
 - name: Verificando se o arquivo epel.repo existe
   stat:
     path: /etc/yum.repos.d/epel.repo
