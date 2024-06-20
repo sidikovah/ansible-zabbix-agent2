@@ -1,12 +1,15 @@
 ---
 # vars file for ansible-zabbix-agent2
 
+############ GENERAL PARAMETERS #################
 agent_PidFile: /var/run/zabbix/zabbix_agent2.pid
-agent_LogType: file
+agent_LogType:
 agent_LogFile: /var/log/zabbix/zabbix_agent2.log
 agent_LogFileSize: 0
 agent_DebugLevel: 3
 agent_SourceIP:
+
+##### Passive checks related
 agent_Server: "{{ zabbix_server }}"
 agent_ListenPort: 10050
 agent_ListenIP:
@@ -14,35 +17,35 @@ agent_StatusPort:
 
 ##### Active checks related
 agent_ServerActive: "{{ zabbix_server }}"
-agent_Hostname:
-agent_HostnameItem: system.hostname
-agent_HostMetadata: Linux
+agent_Hostname: "{{ ansible_hostname|upper }}"
+agent_HostnameItem:
+agent_HostMetadata:
 agent_HostMetadataItem:
 agent_HostInterface:
 agent_HostInterfaceItem:
-agent_RefreshActiveChecks: 60
-agent_BufferSend: 5
-agent_BufferSize: 100
-agent_EnablePersistentBuffer: 0
-agent_PersistentBufferPeriod: 1h
+agent_RefreshActiveChecks:
+agent_BufferSend:
+agent_BufferSize:
+agent_EnablePersistentBuffer:
+agent_PersistentBufferPeriod:
 agent_PersistentBufferFile:
 
 ############ ADVANCED PARAMETERS #################
 agent_Alias:
-agent_Timeout: 30
+agent_Timeout:
 agent_Include: /etc/zabbix/zabbix_agent2.d/*.conf
 agent_PluginTimeout:
-agent_PluginSocket:
+agent_PluginSocket: /run/zabbix/agent.plugin.sock
 
 ####### USER-DEFINED MONITORED PARAMETERS #######
-agent_UnsafeUserParameters: 0
+agent_UnsafeUserParameters:
 agent_UserParameter:
 agent_UserParameterDir:
-agent_ControlSocket: /tmp/agent.sock
+agent_ControlSocket: /run/zabbix/agent.sock
 
 ####### TLS-RELATED PARAMETERS #######
-agent_TLSConnect: unencrypted
-agent_TLSAccept: unencrypted
+agent_TLSConnect:
+agent_TLSAccept:
 agent_TLSCAFile:
 agent_TLSCRLFile:
 agent_TLSServerCertIssuer:
@@ -53,9 +56,9 @@ agent_TLSPSKIdentity:
 agent_TLSPSKFile:
 
 ####### PLUGIN-SPECIFIC PARAMETERS #######
-agent_Plugins_Log_MaxLinesPerSecond: 20
-agent_AllowKey: system.run[*]
+agent_Plugins_Log_MaxLinesPerSecond:
+agent_AllowKey:
 agent_DenyKey:
-agent_Plugins_SystemRun_LogRemoteCommands: 0
-agent_ForceActiveChecksOnStart: 0
+agent_Plugins_SystemRun_LogRemoteCommands:
+agent_ForceActiveChecksOnStart:
 agent_Include_Plugins: ./zabbix_agent2.d/plugins.d/*.conf
