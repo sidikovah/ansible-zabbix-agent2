@@ -1,0 +1,100 @@
+Install and configure Zabbix
+sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+wget -qO- https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo tee /etc/apt/trusted.gpg.d/pgdg.asc &>/dev/null
+sudo apt update
+sudo apt install postgresql-15 postgresql-client-15 -y
+sudo systemctl status postgresql
+
+
+wget https://repo.zabbix.com/zabbix/6.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_6.0-4+ubuntu22.04_all.deb
+dpkg -i zabbix-release_6.0-4+ubuntu22.04_all.deb
+apt update
+apt install zabbix-server-pgsql zabbix-frontend-php php8.1-pgsql zabbix-nginx-conf zabbix-sql-scripts zabbix-agent
+sudo -u postgres createuser --pwprompt zabbix
+sudo -u postgres createdb -O zabbix zabbix
+
+
+sudo -u postgres createuser --pwprompt zabbix
+JvFe7lAffAvOeVsRkalCHweY
+
+sudo -u postgres createdb -O zabbix zabbix
+
+zcat /usr/share/zabbix-sql-scripts/postgresql/server.sql.gz | sudo -u zabbix psql zabbix
+
+Edit file /etc/zabbix/zabbix_server.conf
+
+DBPassword=JvFe7lAffAvOeVsRkalCHweY
+
+vi /etc/zabbix/nginx.conf
+
+server {
+        listen          80;
+        listen          443 ssl;
+        server_name     alif-zabbix.alifislamicbank.kz;
+
+        charset utf-8;
+
+        ssl_certificate     /etc/zabbix/ssl/cert.crt;
+        ssl_certificate_key /etc/zabbix/ssl/cert.key;
+
+        if ($scheme != "https") {
+            return 301 https://$host$request_uri;
+        }
+
+        root    /usr/share/zabbix;
+
+        index   index.php;
+
+        location = /favicon.ico {
+                log_not_found   off;
+        }
+
+        location / {
+                try_files       $uri $uri/ =404;
+        }
+
+        location /assets {
+                access_log      off;
+                expires         10d;
+        }
+
+        location ~ /\.ht {
+                deny            all;
+        }
+
+        location ~ /(api\/|conf[^\.]|include|locale) {
+                deny            all;
+                return          404;
+        }
+
+        location ~ [^/]\.php(/|$) {
+                fastcgi_pass    unix:/var/run/php/zabbix.sock;
+                fastcgi_split_path_info ^(.+\.php)(/.+)$;
+                fastcgi_index   index.php;
+
+                fastcgi_param   DOCUMENT_ROOT   /usr/share/zabbix;
+                fastcgi_param   SCRIPT_FILENAME /usr/share/zabbix$fastcgi_script_name;
+                fastcgi_param   PATH_TRANSLATED /usr/share/zabbix$fastcgi_script_name;
+
+                include fastcgi_params;
+                fastcgi_param   QUERY_STRING    $query_string;
+                fastcgi_param   REQUEST_METHOD  $request_method;
+                fastcgi_param   CONTENT_TYPE    $content_type;
+                fastcgi_param   CONTENT_LENGTH  $content_length;
+
+                fastcgi_intercept_errors        on;
+                fastcgi_ignore_client_abort     off;
+                fastcgi_connect_timeout         60;
+                fastcgi_send_timeout            180;
+                fastcgi_read_timeout            180;
+                fastcgi_buffer_size             128k;
+                fastcgi_buffers                 4 256k;
+                fastcgi_busy_buffers_size       256k;
+                fastcgi_temp_file_write_size    256k;
+        }
+}
+
+
+
+# systemctl restart zabbix-server zabbix-agent nginx php8.1-fpm
+# systemctl enable zabbix-server zabbix-agent nginx php8.1-fpm

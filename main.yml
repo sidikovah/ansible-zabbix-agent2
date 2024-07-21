@@ -1,9 +1,0 @@
----
-- name: Install Zabbix Agent 2
-  hosts: all
-  become: yes
-  vars:
-    zabbix_server: 10.200.1.1
-    zabbix_version: 6.0
-  roles:
-    - zabbix-agent2
