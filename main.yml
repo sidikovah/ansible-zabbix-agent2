@@ -1,0 +1,9 @@
+---
+- name: Install Zabbix Agent 2
+  hosts: all
+  become: yes
+  vars:
+    zabbix_server: alif-p-z01.alifp.cmp.pkz.icdc.io
+    zabbix_version: 6.0
+  roles:
+    - zabbix-agent2
